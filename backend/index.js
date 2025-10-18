@@ -61,15 +61,45 @@ app.get("/books", async (req, res) => {
 app.get("/books/:id", async (req, res) => {
   try {
     const { id } = req.params;
-   const book = await Book.find({});
-     if (!book) {
-            return res.status(404).json({ message: "Book not found" });
-        }
+    console.log(id);
+
+    let id2 = id;
+
+    const book = await Book.findOne({ id2 });
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
 
     return res.status(200).json(book);
   } catch (error) {
-    console.log(error.message);  
-res.status(500).send({ message: error.message });  
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// route update book
+
+app.put("/books/:id", async (req, res) => {
+  try {
+    if (!req.body.title || !req.body.author || !req.body.publishYear) {
+      return res.status(400).send({
+        meassge: "send all required fields :title , author , publisYear",
+      });
+    }
+
+   const { id } = req.params;
+
+   let id2 = id;
+
+
+    const reault = await Book.findIdAndUpdate(id2, req.body);
+    if (!reault) {
+      return res.status(404).json({ meassge: "Book not found" });
+    }
+
+    return res.status(200).json(reault);
+  } catch (error) {
+    console.log(error.meassge);
   }
 });
 
