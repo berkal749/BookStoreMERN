@@ -16,7 +16,8 @@ export default function Home() {
     axios
       .get("http://localhost:5555/books")
       .then((res) => {
-        setBooks(res.data);
+        console.log(res.data.data);
+        setBooks(res.data.data);
         setLoading(false);
       })
       .catch((err) => {

@@ -7,6 +7,9 @@ import  booksRoute from './routes/booksRoute.js'
 import cors from "cors"
 
 const app = express();
+// midlware to handle cors error
+ app.use(cors());
+
 
 app.get("/", (request, response) => {
   console.log(request);
@@ -17,13 +20,6 @@ app.use('/books',booksRoute);
 
 // middleware for parsing request body
 app.use(express.json());
-// midlware to handle cors error
-// app.use(cors({
-
-//   origin:"http://localhost:5555",
-//   methods:['GET','POST','PUT','DELETE'],
-//   allowedHeaders:['Content-Type'],
-// }));
 
 
 app.listen(PORT, () => {
