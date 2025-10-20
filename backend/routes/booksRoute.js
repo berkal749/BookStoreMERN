@@ -46,18 +46,13 @@ router.get("/", async (req, res) => {
 
 // route for get one book from db by id
 
-router.get("/books/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-
-    let id2 = id;
-
-    const book = await Book.findOne({ id2 });
+    const book = await Book.findById(id);  
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-
     return res.status(200).json(book);
   } catch (error) {
     console.log(error.message);
@@ -65,21 +60,23 @@ router.get("/books/:id", async (req, res) => {
   }
 });
 
+
+
 // route update book
 
 router.put("/books/:id", async (req, res) => {
   try {
     if (!req.body.title || !req.body.author || !req.body.publishYear) {
       return res.status(400).send({
-        meassge: "send all required fields :title , author , publisYear",
+        meassge: "send all required fields :title , author , publishYear",
       });
     }
 
     const { id } = req.params;
 
-    let id2 = id;
+    
 
-    console.log(id);
+  
     const reault = await Book.findByIdAndUpdate(id, req.body, { new: true });
 
     console.log(reault);

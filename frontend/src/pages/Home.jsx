@@ -24,7 +24,7 @@ export default function Home() {
         console.log(err);
         setLoading(false);
       });
-  },[]);
+  }, []);
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
@@ -45,9 +45,6 @@ export default function Home() {
             <tr>
               <th className="border border-slate-600 rounded-md">no</th>
               <th className="border border-slate-600 rounded-md">title</th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
-                title
-              </th>
               Author
               <th className="border border-slate-600 rounded-md max-md:hidden">
                 Publish Year
@@ -70,14 +67,23 @@ export default function Home() {
                 <td className="border border-slate-700 rounded-md text-center max-md:hidden">
                   {book.author}
                 </td>
-                <td className="border border-slate-700 rounded-md text-center max-md:hidden">
+                <td className="border border-slate-700 rounded-md text-center">
                   {book.publishYear}
                 </td>
                 <td className="border border-slate-700 rounded-md text-center max-md:hidden">
-                    <div>
-                        <Link></Link>
-                    </div>
-                
+                  <div className="flex justify-center gap-x-4">
+                    <Link to={`/books/details/${book._id} `}>
+                      <BsInfoCircle className="text-2xl text-green-800 "></BsInfoCircle>
+                    </Link>
+
+                    <Link to={`/books/edit/ ` + book._id}>
+                      <AiOutlineEdit className="text-2xl text-yellow-600"></AiOutlineEdit>
+                    </Link>
+
+                    <Link to={`/books/delete/ ` + book._id}>
+                      <MdOutlineDelete className="text-2xl text-red-600"></MdOutlineDelete>
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}
