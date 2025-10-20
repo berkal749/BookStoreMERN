@@ -24,7 +24,7 @@ export default function Home() {
         console.log(err);
         setLoading(false);
       });
-  });
+  },[]);
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
