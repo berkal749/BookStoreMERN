@@ -1,7 +1,107 @@
-import React from 'react'
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import BackButton from "../../components/BackButton";
+import Spinner from "../../components/Spinner";
+import { useNavigate  , useParams} from "react-router-dom";
+export default function EditBooks() {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [publishYear, setPublishYear] = useState("");
+  const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const {id} = useParams();
+    useEffect(()=>{
+  setLoading(true);
+  axios.get(`http://localhost/books/${id}`).then((res)=>{
 
-export default function EditBook() {
+
+    setAuthor(res.data.author);
+    setPublishYear(res.data.publishYear);
+    setTitle(res.data.title);
+    setLoading(false);
+  }).catch((error)=>{
+setLoading(false);
+alert("adreb tla 3la l console");
+console.log(error);
+
+  })
+
+    },[]);
+
+  const handleSaveBook = () => {
+    const data = {
+      title,
+      author,
+      publishYear,
+    };
+    setLoading(true);
+    axios
+      .post("http://localhost:5555/books/change", data)
+      .then(() => {
+        setLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        alert("erorrrr adreb tla 3la console");
+        console.log(error);
+      });
+  };
   return (
-    <div>EditBook</div>
-  )
+    <div className="p-4">
+      <BackButton></BackButton>
+      <h1 className="text-3xl my-4">Edit Book</h1>
+      {loading ? <Spinner /> : "ok"}
+      <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
+        <div className="my-4">
+
+
+
+        
+        <label className="text-xl mr-4 text-gray-500 ">title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border-2 border-gray-500 px-4 py-2 w-full"
+        />
+        </div>
+
+
+
+         <div className="my-4">
+
+
+        
+        <label className="text-xl mr-4 text-gray-500 ">author</label>
+        <input
+          type="text"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          className="border-2 border-gray-500 px-4 py-2 w-full"
+        />
+        </div>
+
+
+
+
+         <div className="my-4">
+
+        
+        <label className="text-xl mr-4 text-gray-500 ">publish year</label>
+        <input
+          type="text"
+          value={publishYear}
+          onChange={(e) => setPublishYear(e.target.value)}
+          className="border-2 border-gray-500 px-4 py-2 w-full"
+        />
+        </div>
+
+        <button className="p-2 bg-sky-300 m-8" onClick={handleSaveBook}>
+          Save
+        </button>
+      </div>
+    </div>
+  );
 }

@@ -5,8 +5,16 @@ import  booksRoute from './routes/booksRoute.js'
 import cors from "cors"
 
 const app = express();
+
 // midlware to handle cors error
- app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Your Vite frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+ // middleware for parsing request body
+app.use(express.json());
 
 
 app.get("/", (request, response) => {
@@ -16,8 +24,7 @@ app.get("/", (request, response) => {
 app.use('/books',booksRoute);
 
 
-// middleware for parsing request body
-app.use(express.json());
+
 
 
 app.listen(PORT, () => {

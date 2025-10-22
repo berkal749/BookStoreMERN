@@ -6,11 +6,11 @@ const router = express.Router();
 
 // Route foe save a new book
 
-router.post("/", async (req, res) => {
+router.post("/change", async (req, res) => {
   try {
     if (!req.body.title || !req.body.author || !req.body.publishYear) {
       return res.status(400).send({
-        meassge: "send all require fields: title,author,publishYear",
+        message: "Send all required fields: title, author, publishYear",
       });
     }
 
@@ -23,8 +23,8 @@ router.post("/", async (req, res) => {
     const book = await Book.create(newBook);
     return res.status(201).send(book);
   } catch (error) {
-    console.log(error.meassge);
-    response.status(500).send({ meassge: error.meassge });
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
   }
 });
 
