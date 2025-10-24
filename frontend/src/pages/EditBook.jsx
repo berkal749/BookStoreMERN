@@ -11,25 +11,24 @@ export default function EditBooks() {
   const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const {id} = useParams();
-    useEffect(()=>{
-  setLoading(true);
-  axios.get(`http://localhost/books/${id}`).then((res)=>{
+    useEffect(() => {
+        setLoading(true);
+        console.log("Book ID:", id);
+        axios.get("http://localhost:5555/books/"+id)
+            .then((res) => {        
+                setAuthor(res.data.author);
+                setPublishYear(res.data.publishYear); 
+                setTitle(res.data.title);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                alert("Don't choose a book that doesn't exist");
+                console.log(error);
+            });
+    }, []);
 
-
-    setAuthor(res.data.author);
-    setPublishYear(res.data.publishYear);
-    setTitle(res.data.title);
-    setLoading(false);
-  }).catch((error)=>{
-setLoading(false);
-alert("adreb tla 3la l console");
-console.log(error);
-
-  })
-
-    },[]);
-
-  const handleSaveBook = () => {
+  const handleEditBook = () => {
     const data = {
       title,
       author,
@@ -37,7 +36,7 @@ console.log(error);
     };
     setLoading(true);
     axios
-      .post("http://localhost:5555/books/change", data)
+      .put(`http://localhost:5555/books/${id}`, data)
       .then(() => {
         setLoading(false);
         navigate("/");
@@ -55,10 +54,6 @@ console.log(error);
       {loading ? <Spinner /> : "ok"}
       <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
         <div className="my-4">
-
-
-
-        
         <label className="text-xl mr-4 text-gray-500 ">title</label>
         <input
           type="text"
@@ -71,7 +66,6 @@ console.log(error);
 
 
          <div className="my-4">
-
 
         
         <label className="text-xl mr-4 text-gray-500 ">author</label>
@@ -98,7 +92,7 @@ console.log(error);
         />
         </div>
 
-        <button className="p-2 bg-sky-300 m-8" onClick={handleSaveBook}>
+        <button className="p-2 bg-sky-300 m-8" onClick={handleEditBook} >
           Save
         </button>
       </div>

@@ -46,17 +46,52 @@ router.get("/", async (req, res) => {
 
 // route for get one book from db by id
 
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // ✅ check if ID is a valid ObjectId
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ message: "Invalid book ID format" });
+//     }
+
+//     const book = await Book.findById(id);
+//     if (!book) {
+//       return res.status(404).json({ message: "Book not found" });
+//     }
+
+//     return res.status(200).json(book);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).send({ message: error.message });
+//   }
+// });
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const book = await Book.findById(id);  
+    console.log("📘 Incoming ID:", id);
+
+    // Validate the ID format first
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log("❌ Invalid ObjectId");
+      return res.status(400).json({ message: "Invalid book ID format" });
+    }
+
+    // Try to find the book
+    const book = await Book.findById(id);
+    console.log("📗 Book found:", book);
+
     if (!book) {
+      console.log("❌ Book not found");
       return res.status(404).json({ message: "Book not found" });
     }
+
+    // Success
     return res.status(200).json(book);
+
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send({ message: error.message });
+    console.log("🔥 Error in GET /books/:id -->", error);
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -64,17 +99,15 @@ router.get("/:id", async (req, res) => {
 
 // route update book
 
-router.put("/books/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     if (!req.body.title || !req.body.author || !req.body.publishYear) {
       return res.status(400).send({
-        meassge: "send all required fields :title , author , publishYear",
+        message: "send all required fields :title , author , publishYear",
       });
     }
 
     const { id } = req.params;
-
-    
 
   
     const reault = await Book.findByIdAndUpdate(id, req.body, { new: true });
@@ -86,7 +119,7 @@ router.put("/books/:id", async (req, res) => {
 
     return res.status(200).json(reault);
   } catch (error) {
-    console.log(error.meassge);
+    console.log(error.message);
   }
 });
 
