@@ -46,6 +46,40 @@ router.get("/", async (req, res) => {
 
 // route for get one book from db by id
 
+import mongoose from "mongoose";
+
+router.get("/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    id = id.trim(); // 👈 FIX: remove extra spaces
+
+    console.log("📘 Incoming ID (trimmed):", id);
+
+    let book;
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      console.log("✅ ID is a valid ObjectId, using findById");
+      book = await Book.findById(id);
+    } else {
+      console.log("⚠️ ID is NOT a valid ObjectId, using findOne");
+      book = await Book.findOne({ _id: id });
+    }
+
+    console.log("📗 Query result:", book);
+
+    if (!book) {
+      console.log("❌ No book found for that ID");
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    return res.status(200).json(book);
+  } catch (error) {
+    console.log("🔥 Error in GET /books/:id -->", error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+
 // router.get("/:id", async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -66,34 +100,6 @@ router.get("/", async (req, res) => {
 //     res.status(500).send({ message: error.message });
 //   }
 // });
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log("📘 Incoming ID:", id);
-
-    // Validate the ID format first
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      console.log("❌ Invalid ObjectId");
-      return res.status(400).json({ message: "Invalid book ID format" });
-    }
-
-    // Try to find the book
-    const book = await Book.findById(id);
-    console.log("📗 Book found:", book);
-
-    if (!book) {
-      console.log("❌ Book not found");
-      return res.status(404).json({ message: "Book not found" });
-    }
-
-    // Success
-    return res.status(200).json(book);
-
-  } catch (error) {
-    console.log("🔥 Error in GET /books/:id -->", error);
-    return res.status(500).json({ message: error.message });
-  }
-});
 
 
 

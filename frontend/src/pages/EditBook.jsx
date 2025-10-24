@@ -14,7 +14,7 @@ export default function EditBooks() {
     useEffect(() => {
         setLoading(true);
         console.log("Book ID:", id);
-        axios.get("http://localhost:5555/books/"+id)
+       axios.get(`http://localhost:5555/books/${id.trim()}`)
             .then((res) => {        
                 setAuthor(res.data.author);
                 setPublishYear(res.data.publishYear); 
@@ -35,17 +35,28 @@ export default function EditBooks() {
       publishYear,
     };
     setLoading(true);
+    console.log("Editing book with ID:", id);
     axios
-      .put(`http://localhost:5555/books/${id}`, data)
-      .then(() => {
+      .put(`http://localhost:5555/books/${id.trim()}`, data)
+      .then((res) => {
+        console.log("GET success:", res.data);
         setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setLoading(false);
-        alert("erorrrr adreb tla 3la console");
-        console.log(error);
-      });
+  setLoading(false);
+  console.error("PUT Error:", error);
+  if (error.response) {
+    console.error("Response data:", error.response.data);
+    console.error("Response status:", error.response.status);
+  } else if (error.request) {
+    console.error("No response:", error.request);
+  } else {
+    console.error("Error message:", error.message);
+  }
+  alert("Error — check console for details");
+});
+
   };
   return (
     <div className="p-4">
