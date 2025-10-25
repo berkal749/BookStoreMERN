@@ -54,7 +54,13 @@ export default function Home() {
           Create Book
         </Link>
       </div>
-      {loading ? <Spinner /> : showType=== 'table'? (<BooksTable books={books} />) : <BooksCard books={books}></BooksCard> }
+      {loading ? (
+        <Spinner />
+      ) : showType === "table" ? (
+        <BooksTable books={books} />
+      ) : (
+        <BooksCard books={books}></BooksCard>
+      )}
     </div>
   );
 }

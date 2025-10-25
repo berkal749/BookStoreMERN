@@ -3,7 +3,6 @@ import { Book } from "../models/bookModel.js";
 
 const router = express.Router();
 
-
 // Route foe save a new book
 
 router.post("/change", async (req, res) => {
@@ -79,7 +78,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
 // router.get("/:id", async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -101,8 +99,6 @@ router.get("/:id", async (req, res) => {
 //   }
 // });
 
-
-
 // route update book
 
 router.put("/:id", async (req, res) => {
@@ -115,7 +111,6 @@ router.put("/:id", async (req, res) => {
 
     const { id } = req.params;
 
-  
     const reault = await Book.findByIdAndUpdate(id, req.body, { new: true });
 
     console.log(reault);

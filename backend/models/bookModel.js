@@ -14,7 +14,6 @@ const bookSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  
 });
 
-export const Book = mongoose.model("books",bookSchema,"books");
+export const Book = mongoose.model("books", bookSchema, "books");
