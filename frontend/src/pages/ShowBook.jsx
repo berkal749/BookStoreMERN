@@ -12,7 +12,7 @@ export default function ShowBook() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:5555/books/${id}`)
+      .get(`https://bookstore-backend-m92g.onrender.com/books/${id}`)
       .then((res) => {
         setBook(res.data);
 

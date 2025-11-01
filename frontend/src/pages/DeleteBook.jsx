@@ -11,7 +11,7 @@ export default function DeleteBook() {
   const handleDeleteBook = () => {
     setLoading(true);
     axios
-      .delete(`http://localhost:5555/books/${id.trim()}`)
+      .delete(`https://bookstore-backend-m92g.onrender.com/books/${id.trim()}`)
       .then(() => {
         setLoading(false);
         navigate("/");

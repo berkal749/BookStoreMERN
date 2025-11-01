@@ -16,7 +16,7 @@ export default function EditBooks() {
     setLoading(true);
     console.log("Book ID:", id);
     axios
-      .get(`http://localhost:5555/books/${id.trim()}`)
+      .get(`https://bookstore-backend-m92g.onrender.com/books/${id.trim()}`)
       .then((res) => {
         setAuthor(res.data.author);
         setPublishYear(res.data.publishYear);
